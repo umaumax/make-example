@@ -26,6 +26,12 @@ make
 bash -ex ./make.asm.sh
 ```
 
+Makefileによっては，下記のような出力にCXXが利用されているので，注意(-oではない)
+```
+CXX.sh g++ -M main.cpp \
+                | sed "s;^.*\.o[ :]*;obj/&;" > obj/_depend_
+```
+
 ----
 
 ## FYI
