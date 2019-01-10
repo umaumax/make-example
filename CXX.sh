@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# NOTE: if you want to force add -g
+# CXX="$PWD/CXX.sh $PWD '$CXX' -g"
+
 OUTPUT_WD=${1:-$PWD}
 shift 1
 CXX=${1:-c++}
