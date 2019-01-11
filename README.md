@@ -21,7 +21,8 @@ var:;: CC:'$(CC)' CXX:'$(CXX)' RANLIB:'$(RANLIB)'
 * NOTE: CCもCXXも両方CXX.shで処理してしまっている
 ```
 make clean
-echo '#!/usr/bin/env bash' > make.asm.sh; chmod u+x make.asm.sh; CC="$PWD/CXX.sh $PWD '$CC'" CXX="$PWD/CXX.sh $PWD '$CXX'" make
+echo '#!/usr/bin/env bash' > make.asm.sh; chmod u+x make.asm.sh; \
+CC="$PWD/CXX.sh $PWD '$CC'" CXX="$PWD/CXX.sh $PWD '$CXX'" make
 make
 bash -ex ./make.asm.sh
 ```
