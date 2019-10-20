@@ -33,6 +33,16 @@ CXX.sh g++ -M main.cpp \
                 | sed "s;^.*\.o[ :]*;obj/&;" > obj/_depend_
 ```
 
+## checkmake warnings
+### Missing required phony target "test"
+`.PHONY: test`を作成することで解決
+e.g.
+```
+.PHONY: test
+test:
+	echo "[TEST] OK"
+```
+
 ----
 
 ## FYI

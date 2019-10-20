@@ -22,5 +22,9 @@ clean:
 depend:
 	makedepend -- $(CFLAGS) -- $(ALL_C_FILES)
 
+.PHONY: test
+test:
+	echo "[TEST] OK"
+
 -include depend.inc
 # DO NOT DELETE
