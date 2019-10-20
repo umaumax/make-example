@@ -1,8 +1,11 @@
-PROGRAM = main
-OBJS = main.o
-CC := $(CC)
-CXX := $(CXX)
-CFLAGS = -Wall -O2
+CC := gcc
+CXX := g++
+CFLAGS := -Wall -O3
+CXXFLAGS := -Wall -O3
+
+PROGRAM := main
+OBJS := main.o
+
 .SUFFIXES: .cpp .c .o
 
 .PHONY: all
@@ -12,7 +15,7 @@ $(PROGRAM): $(OBJS)
 	$(CXX) -o $(PROGRAM) $^
 
 .c.o:
-	$(CXX) $(CFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) -c $<
 
 .PHONY: clean
 clean:
@@ -20,11 +23,14 @@ clean:
 
 .PHONY: depend
 depend:
-	makedepend -- $(CFLAGS) -- $(ALL_C_FILES)
+	makedepend -- $(CXXFLAGS) -- $(ALL_C_FILES)
 
 .PHONY: test
-test:
-	echo "[TEST] OK"
+test: $(PROGRAM)
+	# NOTE: shell command which has '-' prefix ignore exit code
+	-false
+	echo "[TEST]"
+	./$(PROGRAM)
 
 -include depend.inc
 # DO NOT DELETE
