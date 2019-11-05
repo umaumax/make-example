@@ -37,6 +37,7 @@ $ make CXX=g++
 ```
 CXX := g++
 ```
+逆に、makeコマンドのオプションで指定した値はソースコード内では変更ができない
 
 FYI: [make と環境変数 – talkwithdevices\.com]( https://www.talkwithdevices.com/archives/49 )
 
