@@ -74,6 +74,15 @@ clean:
         -rm -f *.o
 ```
 
+## debug
+### CC, CXXの使い方の例
+```
+CXX="echo $PWD | grep xxx; echo" make
+CXX=":" make
+CXX="echo" make
+CXX="pwd; clang++ -flto" CC="pwd; clang -flto" make |& tee build.log | ccze -A
+```
+
 ## checkmake warnings
 ### Missing required phony target "test"
 `.PHONY: test`を作成することで解決
