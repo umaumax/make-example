@@ -81,6 +81,10 @@ CXX="echo $PWD | grep xxx; echo" make
 CXX=":" make
 CXX="echo" make
 CXX="pwd; clang++ -flto" CC="pwd; clang -flto" make |& tee build.log | ccze -A
+# NOTE: force -O0 hack one liner (you may use cxx_hook.sh)
+# NOTE: $@ will be replaced by make command
+# NOTE: CXX is run by /bin/sh -c
+make CXX='bash -xc "clang++ -g -flto `echo \\\x24\\\x40` -O0" -- '
 ```
 
 ## checkmake warnings
