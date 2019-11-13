@@ -91,6 +91,8 @@ make CXX='bash -xc "clang++ -g -flto `echo \\\x24\\\x40` -O0" -- '
 make CXX='bash -xc "clang++ -g -flto `echo JEAK | base64 -d` -O0" -- '
 ```
 
+NOTE: `clang++` parse last `-OX` option
+
 ## checkmake warnings
 ### Missing required phony target "test"
 `.PHONY: test`を作成することで解決
