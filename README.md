@@ -82,9 +82,13 @@ CXX=":" make
 CXX="echo" make
 CXX="pwd; clang++ -flto" CC="pwd; clang -flto" make |& tee build.log | ccze -A
 # NOTE: force -O0 hack one liner (you may use cxx_hook.sh)
+#  becase cmake parse command ' ' as ';'
 # NOTE: $@ will be replaced by make command
 # NOTE: CXX is run by /bin/sh -c
+# for darwin sh
 make CXX='bash -xc "clang++ -g -flto `echo \\\x24\\\x40` -O0" -- '
+# for ubuntu sh: JEAK is base64 encode str of "$@"
+make CXX='bash -xc "clang++ -g -flto `echo JEAK | base64 -d` -O0" -- '
 ```
 
 ## checkmake warnings
