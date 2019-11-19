@@ -74,6 +74,26 @@ clean:
         -rm -f *.o
 ```
 
+## include flags
+```
+INCLUDE_FILES = \
+	./xxx \
+	./yyy \
+	./zzz
+INCLUDE_FLAG := $(addprefix -I,$(INCLUDE_FILES))
+# $(info [DEBUG] $$INCLUDE_FLAG is [${INCLUDE_FLAG}])
+```
+
+## lib flags
+```
+LIB_FILES = \
+	xxx \
+	yyy \
+	zzz
+LIB_FLAG := $(addprefix -l,$(LIB_FILES))
+# $(info [DEBUG] $$LIB_FLAG is [${LIB_FLAG}])
+```
+
 ## debug
 ### CC, CXXの使い方の例
 ```
