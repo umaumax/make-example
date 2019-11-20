@@ -94,6 +94,26 @@ LIB_FLAG := $(addprefix -l,$(LIB_FILES))
 # $(info [DEBUG] $$LIB_FLAG is [${LIB_FLAG}])
 ```
 
+## 文字列パターン
+`%`は複数利用できない
+
+[gnu make \- Makefile: Filter out strings containing a character \- Stack Overflow]( https://stackoverflow.com/questions/6145041/makefile-filter-out-strings-containing-a-character )
+> As the documentation says, only the first % character is a wildcard -- subsequent % characters match literal % characters in whatever you are matching. So your command filters out names that end in g%
+
+## filter-out
+`%xxx%`のパターンでフィルタイングを行いたい
+
+* [make\-filter\-out \- filter\-out関数の使い方 \- spikelet days]( https://taiyo.hatenadiary.org/entry/20080402/p1 )
+* [gnu make \- Makefile: Filter out strings containing a character \- Stack Overflow]( https://stackoverflow.com/questions/6145041/makefile-filter-out-strings-containing-a-character )
+
+```
+list := __ hello makefile world __
+submatch-filter-out = $(foreach v,$(2),$(if $(findstring $(1),$(v)),,$(v)))
+# NOTE: :2nd argに指定する文字列の前にスペースを設けるとそのスペースを含めたパターンとなってしまうため注意
+filtered_list:=$(call submatch-filter-out,e,$(list))
+$(info [DEBUG] $$filtered_list is [${filtered_list}])
+```
+
 ## debug
 ### CC, CXXの使い方の例
 ```
@@ -121,6 +141,17 @@ e.g.
 .PHONY: test
 test:
 	echo "[TEST] OK"
+```
+
+## error messages
+### Makefile:xxx: *** missing separator.  Stop.
+返り値の処理をしていない場合
+```
+$(shell echo 1)
+```
+正しいパターン
+```
+ret=$(shell echo 1)
 ```
 
 ----
