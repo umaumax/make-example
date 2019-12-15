@@ -178,6 +178,9 @@ $(MAKE) task1
 > タスク実行中に環境変数を書き換えたい場合は、コマンド実行が1行終わるごとに環境変数がmakeコマンド実行時に戻ることに注意します。
 > `;\`で改行してコマンドを複数書きます。
 
+## foreach
+* [makefileのforeachのハマりどころ \- podhmo's diary]( https://pod.hatenablog.com/entry/2018/05/10/194204 )
+
 ----
 
 ## FYI
