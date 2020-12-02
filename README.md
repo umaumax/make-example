@@ -1,7 +1,7 @@
 # make example
 
 ## how to run
-```
+``` bash
 make CXX=clang++
 make clean
 make
@@ -14,13 +14,14 @@ make test
 * `:=`: 変数を再帰的に展開しないで代入(基本的にはこの代入を使うべき)
   * `CC := $(CC)`: 環境変数で初期化(default:`${CXX:-cc}` at darwin)
   * `CXX := $(CXX)`: 環境変数で初期化(default:`${CXX:-c++}` at darwin)
-* `?=`: デフォルト値を設定
+* `?=`: デフォルト値を設定(環境変数/`make XXX=123`などの方が優先度が高い)
   * `RANLIB ?= ranlib`
+* `+=`: 純粋なMakefile内の変数に対して追記する(`hoge := $(hoge) xxx`と同等)
 
 ## デフォルトの`CXX`の値を設定しつつ，`$CXX`の値で上書き可能な設定にする方法は?
 1. makfileのみで対応する方法
 `Makefile`
-```
+``` make
 ifneq ($(shell echo $${CXX}),)
 	CXX := $(CXX)
 else
@@ -29,15 +30,16 @@ endif
 ```
 
 2. 運用でカバーする方法
-```
+``` bash
 $ make CXX=g++
 ```
+__逆に、makeコマンドのオプションで指定した値はソースコード内では変更ができない__
+(e.g. `+=`での追記などが有効でなくなる)
 
 `Makefile`
-```
+``` make
 CXX := g++
 ```
-逆に、makeコマンドのオプションで指定した値はソースコード内では変更ができない
 
 FYI: [make と環境変数 – talkwithdevices\.com]( https://www.talkwithdevices.com/archives/49 )
 
@@ -53,7 +55,7 @@ var:;: CC:'$(CC)' CXX:'$(CXX)' RANLIB:'$(RANLIB)'
 ## how to generate asm
 * NOTE: `.o`から実行ファイルを作成するときの`-S`は意味がないよう(これは`.o`が複数ある場合も)
 * NOTE: CCもCXXも両方CXX.shで処理してしまっている
-```
+``` bash
 make clean
 echo '#!/usr/bin/env bash' > make.asm.sh; chmod u+x make.asm.sh; \
 CC="$PWD/CXX.sh $PWD '$CC'" CXX="$PWD/CXX.sh $PWD '$CXX'" make
@@ -62,20 +64,20 @@ bash -ex ./make.asm.sh
 ```
 
 Makefileによっては，下記のような出力にCXXが利用されているので，注意(-oではない)
-```
+``` bash
 CXX.sh g++ -M main.cpp \
                 | sed "s;^.*\.o[ :]*;obj/&;" > obj/_depend_
 ```
 
 ## 終了コード
 makeは各シェルコマンドの終了コードを調べ，エラーの場合は中断するが，コマンドの先頭に`-`を付加すれば終了コードを無視する
-```
+``` make
 clean:
         -rm -f *.o
 ```
 
 ## include flags
-```
+``` make
 INCLUDE_FILES = \
 	./xxx \
 	./yyy \
@@ -85,7 +87,7 @@ INCLUDE_FLAG := $(addprefix -I,$(INCLUDE_FILES))
 ```
 
 ## lib flags
-```
+``` make
 LIB_FILES = \
 	xxx \
 	yyy \
@@ -106,7 +108,7 @@ LIB_FLAG := $(addprefix -l,$(LIB_FILES))
 * [make\-filter\-out \- filter\-out関数の使い方 \- spikelet days]( https://taiyo.hatenadiary.org/entry/20080402/p1 )
 * [gnu make \- Makefile: Filter out strings containing a character \- Stack Overflow]( https://stackoverflow.com/questions/6145041/makefile-filter-out-strings-containing-a-character )
 
-```
+``` make
 list := __ hello makefile world __
 submatch-filter-out = $(foreach v,$(2),$(if $(findstring $(1),$(v)),,$(v)))
 # NOTE: :2nd argに指定する文字列の前にスペースを設けるとそのスペースを含めたパターンとなってしまうため注意
@@ -116,7 +118,7 @@ $(info [DEBUG] $$filtered_list is [${filtered_list}])
 
 ## debug
 ### CC, CXXの使い方の例
-```
+``` bash
 CXX="echo $PWD | grep xxx; echo" make
 CXX=":" make
 CXX="echo" make
@@ -137,7 +139,7 @@ NOTE: `clang++` parse last `-OX` option
 ### Missing required phony target "test"
 `.PHONY: test`を作成することで解決
 e.g.
-```
+``` make
 .PHONY: test
 test:
 	echo "[TEST] OK"
@@ -146,11 +148,11 @@ test:
 ## error messages
 ### Makefile:xxx: *** missing separator.  Stop.
 返り値の処理をしていない場合
-```
+``` make
 $(shell echo 1)
 ```
 正しいパターン
-```
+``` make
 ret=$(shell echo 1)
 ```
 
@@ -159,7 +161,7 @@ ret=$(shell echo 1)
 > makeの仕様でタスク定義名と同じファイルが存在している場合はタスクが実行されません。
 > これを回避するためには、.PHONY: task をタスク定義に付けます。
 
-```
+``` make
 .PHONY: task
 task:
 	command
@@ -167,7 +169,7 @@ task:
 
 ## 自身のMakefileに定義してある別のタスク定義を実行したい場合
 
-```
+``` make
 $(MAKE) task1
 ```
 
