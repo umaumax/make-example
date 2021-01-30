@@ -67,6 +67,7 @@ $ CXX=piyo make
 [DEBUG] $CXX is ['XXX']
 make: Nothing to be done for `all'.
 ```
+ちなみに，`'XXX'`とするとシングルクォートも値に含まれることに注意
 
 FYI: [make と環境変数 – talkwithdevices\.com]( https://www.talkwithdevices.com/archives/49 )
 
