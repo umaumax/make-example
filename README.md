@@ -36,6 +36,8 @@ STRIP := $(if $(STRIP),$(STRIP),strip)
 RANLIB := $(if $(RANLIB),$(RANLIB),ranlib)
 ```
 
+[Makefile set if variable is empty \- Stack Overflow]( https://stackoverflow.com/questions/38801796/makefile-set-if-variable-is-empty )
+
 2. 運用でカバーする方法
 ``` bash
 $ make CXX=g++
