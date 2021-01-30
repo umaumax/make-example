@@ -27,18 +27,45 @@ ifneq ($(shell echo $${CXX}),)
 else
 	CXX := g++
 endif
+
+# or simple way
+CC := $(if $(CC),$(CC),gcc)
+CXX := $(if $(CXX),$(CXX),g++)
+AR := $(if $(AR),$(AR),ar)
+STRIP := $(if $(STRIP),$(STRIP),strip)
+RANLIB := $(if $(RANLIB),$(RANLIB),ranlib)
 ```
 
 2. 運用でカバーする方法
 ``` bash
 $ make CXX=g++
 ```
-__逆に、makeコマンドのオプションで指定した値はソースコード内では変更ができない__
+__makeコマンドのオプションで指定した値はソースコード内では全く変更ができないことに注意(環境変数指定の場合は変更可能)__
 (e.g. `+=`での追記などが有効でなくなる)
 
 `Makefile`
 ``` make
-CXX := g++
+CXX := $(if $(CXX),$(CXX),g++)
+$(info [DEBUG] $$CXX is [${CXX}])
+CXX := 'XXX'
+$(info [DEBUG] $$CXX is [${CXX}])
+
+all:
+```
+
+``` bash
+$ make
+[DEBUG] $CXX is [c++]
+[DEBUG] $CXX is ['XXX']
+make: Nothing to be done for `all'.
+$ make CXX=piyo
+[DEBUG] $CXX is [piyo]
+[DEBUG] $CXX is [piyo]
+make: Nothing to be done for `all'.
+$ CXX=piyo make
+[DEBUG] $CXX is [piyo]
+[DEBUG] $CXX is ['XXX']
+make: Nothing to be done for `all'.
 ```
 
 FYI: [make と環境変数 – talkwithdevices\.com]( https://www.talkwithdevices.com/archives/49 )
