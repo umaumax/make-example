@@ -4,26 +4,26 @@ CFLAGS := -Wall -O3
 CXXFLAGS := -Wall -O3
 
 PROGRAM := main
-OBJS := main.o
+SRCS := main.cpp
+OBJS := $(SRCS:%.cpp=%.o)
+DEPS := $(SRCS:%.cpp=%.d)
 
 .SUFFIXES: .cpp .c .o
 
 .PHONY: all
-all: depend $(PROGRAM)
+all: $(PROGRAM)
+
+-include $(DEPS)
 
 $(PROGRAM): $(OBJS)
 	$(CXX) -o $(PROGRAM) $^
 
-.c.o:
-	$(CXX) $(CXXFLAGS) -c $<
+.cpp.o:
+	$(CXX) $(CXXFLAGS) -MMD -MP -c $<
 
 .PHONY: clean
 clean:
 	$(RM) $(PROGRAM) $(OBJS) depend.inc
-
-.PHONY: depend
-depend:
-	makedepend -- $(CXXFLAGS) -- $(ALL_C_FILES)
 
 .PHONY: test
 test: $(PROGRAM)
@@ -32,5 +32,10 @@ test: $(PROGRAM)
 	echo "[TEST]"
 	./$(PROGRAM)
 
--include depend.inc
+hoge:
+	ls hoge
+
+fuga:
+	ls fuga
+
 # DO NOT DELETE
